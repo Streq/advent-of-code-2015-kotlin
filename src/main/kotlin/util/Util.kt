@@ -43,3 +43,38 @@ private fun getPath(c: Class<*>, file: String): String {
     val resource: URL? = c.getResource(file)
     return resource?.path!!
 }
+
+
+class Grid<T>(w: Int, h: Int, initializer: (Int, Int) -> T) {
+    val width: Int = w
+    val height: Int = h
+    val array: Array<Any?> = Array(this.width * this.height) { i -> initializer(i / this.width, i % this.height) }
+
+    fun set(x: Int, y: Int, v: T) {
+        array[i(x, y)] = v
+    }
+
+    fun setSafe(x: Int, y: Int, v: T): Boolean {
+        if (withinBounds(i(x, y))) {
+            array[i(x, y)] = v
+            return true
+        }
+        return false
+    }
+
+    fun get(x: Int, y: Int): T {
+        return getRaw(i(x, y))
+    }
+
+    fun getOrElse(x: Int, y: Int, supplier: () -> T): T {
+        val i = i(x, y)
+        return if (withinBounds(i)) getRaw(i) else supplier.invoke()
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun getRaw(i: Int) = array[i] as T
+
+    private fun withinBounds(i: Int) = i >= 0 && i < array.size
+
+    private fun i(x: Int, y: Int) = y * width + x
+}
