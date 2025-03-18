@@ -1,12 +1,7 @@
 package day01
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import util.exampleInputPath
 import kotlin.test.Test
-
-object Input {
-    val EXAMPLE: String = exampleInputPath(object {}.javaClass)
-}
 
 class Day01Test {
     @Test

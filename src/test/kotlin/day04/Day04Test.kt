@@ -24,7 +24,7 @@ class Day04Test {
 
     @Test
     fun testPart2() {
-        assertEquals(0, Day04.Part2.solveFromFile(Input.EXAMPLE));
+        assertEquals(0, Day04.Part2.solveFromFile(Input.EXAMPLE))
     }
 }
 

@@ -72,7 +72,7 @@ class Day03 {
             val p0 = MutPoint(0, 0)
             val p1 = MutPoint(0, 0)
             set.add(p0.toPoint())
-            var p = p1;
+            var p = p1
             for (c in input) {
                 p = if (p === p1) p0 else p1
                 when (c) {

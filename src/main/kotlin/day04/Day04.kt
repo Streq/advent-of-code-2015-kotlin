@@ -48,7 +48,7 @@ class Day04 {
             var i = 0
             while (true) {
                 if (hash("$input$i").startsWith("00000")) {
-                    return i.toLong();
+                    return i.toLong()
                 }
                 ++i
             }
@@ -74,7 +74,7 @@ class Day04 {
             var i = 0
             while (true) {
                 if (hash("$input$i").startsWith("000000")) {
-                    return i.toLong();
+                    return i.toLong()
                 }
                 ++i
             }
