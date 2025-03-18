@@ -5,13 +5,18 @@ import util.inputPath
 import util.timeSolution
 
 typealias InputType = String
+typealias OutputType = Long
 
 object Input {
     val PATH: String = inputPath(object {}.javaClass)
 }
 
-private fun inputFromFile(path: String): String {
-    return getFileAsString(path)
+private fun inputFromFile(path: String): InputType {
+    return inputFromRawFile(getFileAsString(path))
+}
+
+private fun inputFromRawFile(contents: String): InputType {
+    return contents
 }
 
 class DayN {
@@ -22,16 +27,20 @@ class DayN {
             println(solveFromFile(Input.PATH))
         }
 
-        fun solveFromFile(input: String): Long {
+        fun solveFromFile(input: String): OutputType {
             return solve(inputFromFile(input))
         }
 
-        fun solve(input: InputType): Long {
+        fun solveFromRawFile(fileContents: String): OutputType {
+            return solve(inputFromRawFile(fileContents))
+        }
+
+        fun solve(input: InputType): OutputType {
             println(input)
             return timeSolution { solveInternal(input) }
         }
 
-        private fun solveInternal(input: InputType): Long {
+        private fun solveInternal(input: InputType): OutputType {
             return 0
         }
     }
@@ -42,15 +51,19 @@ class DayN {
             println(solveFromFile(Input.PATH))
         }
 
-        fun solveFromFile(input: String): Long {
+        fun solveFromFile(input: String): OutputType {
             return solve(inputFromFile(input))
         }
 
-        fun solve(input: InputType): Long {
+        fun solveFromRawFile(fileContents: String): OutputType {
+            return solve(inputFromRawFile(fileContents))
+        }
+
+        fun solve(input: InputType): OutputType {
             return timeSolution { solveInternal(input) }
         }
 
-        private fun solveInternal(input: InputType): Long {
+        private fun solveInternal(input: InputType): OutputType {
             return 0
         }
     }
