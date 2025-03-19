@@ -45,7 +45,7 @@ private fun inputFromRawFile(contents: String): InputType {
     return contents.lines().filterNot { it.isBlank() }.map { it.split(" -> ") }.associate { it[1] to parseExpr(it[0]) }
 }
 
-private fun solveAllValues(input: InputType): String {
+private fun solveAllValues(input: InputType): InputType {
     val map = input.toMutableMap()
 
     fun unary(operator: String, value: UShort): UShort {
@@ -85,7 +85,11 @@ private fun solveAllValues(input: InputType): String {
     }
 
 
-    return map.entries.filter { it.value is LiteralValue }.map { it.key to (it.value as LiteralValue).value }
+    return map.toMap()
+}
+
+private fun toString(input: InputType): String {
+    return input.entries.filter { it.value is LiteralValue }.map { it.key to (it.value as LiteralValue).value }
         .sortedBy { it.first }
         .joinToString("\n") { "${it.first}: ${it.second}" }
 }
@@ -112,7 +116,7 @@ class Day07 {
         }
 
         private fun solveInternal(input: InputType): OutputType {
-            return solveAllValues(input)
+            return toString(solveAllValues(input))
         }
 
 
@@ -137,10 +141,10 @@ class Day07 {
         }
 
         private fun solveInternal(input: InputType): OutputType {
-            val mut = input.toMutableMap()
-
-            mut["b"] = LiteralValue(46065U)
-            return solveAllValues(input)
+            val firstSolution = solveAllValues(input)
+            val secondMap = input.toMutableMap()
+            secondMap["b"] = firstSolution["a"]!!
+            return toString(solveAllValues(secondMap))
         }
     }
 }
