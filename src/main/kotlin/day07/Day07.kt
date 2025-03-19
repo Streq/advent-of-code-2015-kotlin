@@ -16,9 +16,33 @@ sealed interface Expr
 sealed interface Value : Expr
 data class LiteralValue(val value: UShort) : Value
 data class Reference(val ref: String) : Value
-data class BinaryOperator(val operation: String, val a: Value, val b: Value) : Expr
-data class UnaryOperator(val operation: String, val a: Value) : Expr
+data class BinaryOperator(val operation: BinaryOp, val a: Value, val b: Value) : Expr
+data class UnaryOperator(val operation: UnaryOp, val a: Value) : Expr
+enum class UnaryOp {
+    NOT;
 
+    fun apply(a: Int): Int {
+        return when (this) {
+            NOT -> a.inv()
+        }
+    }
+}
+
+enum class BinaryOp {
+    AND,
+    OR,
+    LSHIFT,
+    RSHIFT;
+
+    fun apply(a: Int, b: Int): Int {
+        return when (this) {
+            AND -> a.and(b)
+            OR -> a.or(b)
+            LSHIFT -> a.shl(b)
+            RSHIFT -> a.ushr(b)
+        }
+    }
+}
 
 private fun parseValue(expr: String): Value {
     return if ("\\d+".toRegex().matchEntire(expr) != null) {
@@ -32,8 +56,8 @@ private fun parseExpr(expr: String): Expr {
     val split = expr.split(" ")
     return when (split.size) {
         1 -> parseValue(split[0])
-        2 -> UnaryOperator(split[0], parseValue(split[1]))
-        else -> BinaryOperator(split[1], parseValue(split[0]), parseValue(split[2]))
+        2 -> UnaryOperator(UnaryOp.valueOf(split[0]), parseValue(split[1]))
+        else -> BinaryOperator(BinaryOp.valueOf(split[1]), parseValue(split[0]), parseValue(split[2]))
     }
 }
 
@@ -48,40 +72,23 @@ private fun inputFromRawFile(contents: String): InputType {
 private fun solveAllValues(input: InputType): InputType {
     val map = input.toMutableMap()
 
-    fun unary(operator: String, value: UShort): UShort {
-        return when (operator) {
-            "NOT" -> value.inv()
-            else -> throw IllegalStateException()
-        }
-    }
 
-    fun binary(operator: String, a: UShort, b: UShort): UShort {
-        return when (operator) {
-            "AND" -> a.and(b)
-            "OR" -> a.or(b)
-            "LSHIFT" -> a.toInt().shl(b.toInt()).toUShort()
-            "RSHIFT" -> a.toInt().ushr(b.toInt()).toUShort()
-            else -> throw IllegalStateException()
-        }
-    }
-
-
-    fun resolveExpression(v: Expr): UShort {
-        val realValue = when (v) {
+    fun toValue(v: Expr): UShort {
+        val realValue: UShort = when (v) {
             is LiteralValue -> v.value
             is Reference -> {
-                val ret = resolveExpression(map[v.ref]!!)
+                val ret = toValue(map[v.ref]!!)
                 map[v.ref] = LiteralValue(ret)
                 ret
             }
 
-            is BinaryOperator -> binary(v.operation, resolveExpression(v.a), resolveExpression(v.b))
-            is UnaryOperator -> unary(v.operation, resolveExpression(v.a))
+            is BinaryOperator -> v.operation.apply(toValue(v.a).toInt(), toValue(v.b).toInt()).toUShort()
+            is UnaryOperator -> v.operation.apply(toValue(v.a).toInt()).toUShort()
         }
         return realValue
     }
     for (key in map.keys) {
-        map[key] = LiteralValue(resolveExpression(map[key]!!))
+        map[key] = LiteralValue(toValue(map[key]!!))
     }
 
 
