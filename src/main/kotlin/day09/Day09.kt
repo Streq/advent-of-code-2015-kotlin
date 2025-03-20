@@ -4,29 +4,6 @@ import util.getFileAsString
 import util.inputPath
 import util.timeSolution
 
-typealias InputType = List<Connection>
-typealias OutputType = String
-
-object Input {
-    val PATH: String = inputPath(object {}.javaClass)
-}
-
-private fun inputFromFile(path: String): InputType {
-    return inputFromRawFile(getFileAsString(path))
-}
-
-data class Connection(val distance: Int, val a: String, val b: String)
-
-private fun inputFromRawFile(contents: String): InputType {
-    val regex = """(\w+) to (\w+) = (\d+)""".toRegex()
-    return contents.lineSequence()
-        .mapNotNull { regex.matchEntire(it)?.destructured }
-        .map { (a, b, distance) -> Connection(distance.toInt(), a, b) }
-        .toList()
-}
-
-typealias DistanceMap = Map<String, Map<String, Int>>
-
 object Day09 {
     @JvmStatic
     fun main(args: Array<String>) {
@@ -45,6 +22,27 @@ object Day09 {
         println(input)
         return timeSolution { solveInternal(input) }
     }
+}
+
+data class Connection(val distance: Int, val a: String, val b: String)
+typealias InputType = List<Connection>
+typealias OutputType = String
+typealias DistanceMap = Map<String, Map<String, Int>>
+
+object Input {
+    val PATH: String = inputPath(object {}.javaClass)
+}
+
+private fun inputFromFile(path: String): InputType {
+    return inputFromRawFile(getFileAsString(path))
+}
+
+private fun inputFromRawFile(contents: String): InputType {
+    val regex = """(\w+) to (\w+) = (\d+)""".toRegex()
+    return contents.lineSequence()
+        .mapNotNull { regex.matchEntire(it)?.destructured }
+        .map { (a, b, distance) -> Connection(distance.toInt(), a, b) }
+        .toList()
 }
 
 private fun solveInternal(input: InputType): OutputType {
@@ -102,6 +100,5 @@ private fun getPathsThatCoverAllCitiesOnce(
             }
         }
     }
-
     return paths
 }
