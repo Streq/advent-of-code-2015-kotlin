@@ -56,7 +56,7 @@ private fun solveInternal(input: InputType): OutputType {
             .distinctBy { it.second }.toList()
 
 
-    return paths
+    return listOf(paths.first(), paths.last())
         .joinToString("\n") { pair ->
             "${pair.first.joinToString(" -> ") { it }} = ${pair.second}"
         }
@@ -86,10 +86,10 @@ private fun getPathsThatCoverAllCitiesOnce(
 
     val toVisit: ArrayDeque<Node> = ArrayDeque()
 
-    toVisit.addFirst(Node(startingCity, listOf()))
+    toVisit.addLast(Node(startingCity, listOf()))
 
     while (toVisit.isNotEmpty()) {
-        with(toVisit.removeFirst()) {
+        with(toVisit.removeLast()) {
             val currentPath = pathAlreadyTraversed + city
             val visitedCities = currentPath.toSet()
             val connectedCities = map[city]!!.keys

@@ -9,7 +9,6 @@ class Day09Test {
         assertEquals(
             """
             Belfast -> London -> Dublin = 982
-            Dublin -> Belfast -> London = 659
             Belfast -> Dublin -> London = 605
             """.trimIndent(),
             Day09.solveFromRawFile(
