@@ -3,6 +3,7 @@ package day08
 import util.getFileAsString
 import util.inputPath
 import util.timeSolution
+import java.util.logging.Logger
 
 typealias InputType = String
 typealias OutputType = Int
@@ -20,18 +21,18 @@ private fun inputFromRawFile(contents: String): InputType {
 }
 
 fun countCharacters(str: String): OutputType {
-    var str = str
+    var ret = str
     var count = 0
-    while (str.isNotEmpty()) {
+    while (ret.isNotEmpty()) {
         val (codeSize, actualSize) =
-            if ("""\\x[0-9a-f]{2}""".toRegex().matchesAt(str, 0))
+            if ("""\\x[0-9a-f]{2}""".toRegex().matchesAt(ret, 0))
                 4 to 1
-            else if (str.startsWith('"'))
+            else if (ret.startsWith('"'))
                 1 to 0
-            else if (str.startsWith('\\'))
+            else if (ret.startsWith('\\'))
                 2 to 1
             else 1 to 1
-        str = str.substring(codeSize)
+        ret = ret.substring(codeSize)
         count += codeSize - actualSize
 
     }
@@ -50,6 +51,9 @@ fun countCharactersExpanded(str: String): OutputType {
 
 
 class Day08 {
+    companion object {
+        val LOG: Logger = Logger.getLogger(Day08::class.java.name)
+    }
 
     object Part1 {
         @JvmStatic
@@ -67,7 +71,7 @@ class Day08 {
 
         fun solve(input: InputType): OutputType {
             println(input)
-            return timeSolution { solveInternal(input) }
+            return LOG.timeSolution { solveInternal(input) }
         }
 
         private fun solveInternal(input: InputType): OutputType {
@@ -90,7 +94,7 @@ class Day08 {
         }
 
         fun solve(input: InputType): OutputType {
-            return timeSolution { solveInternal(input) }
+            return LOG.timeSolution { solveInternal(input) }
         }
 
         private fun solveInternal(input: InputType): OutputType {

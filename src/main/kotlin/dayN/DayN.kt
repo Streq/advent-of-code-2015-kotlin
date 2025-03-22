@@ -1,8 +1,8 @@
 package dayN
 
-import util.getFileAsString
-import util.inputPath
-import util.timeSolution
+import util.*
+import java.util.logging.Level
+import java.util.logging.Logger
 
 typealias InputType = String
 typealias OutputType = Long
@@ -18,6 +18,8 @@ private fun inputFromFile(path: String): InputType {
 private fun inputFromRawFile(contents: String): InputType {
     return contents
 }
+
+val LOG: Logger = Logger.getLogger(DayN::class.java.name).also { it.level = Level.INFO }
 
 class DayN {
 
@@ -36,8 +38,8 @@ class DayN {
         }
 
         fun solve(input: InputType): OutputType {
-            println(input)
-            return timeSolution { solveInternal(input) }
+            LOG.fine(input)
+            return LOG.timeSolution { solveInternal(input) }
         }
 
         private fun solveInternal(input: InputType): OutputType {
@@ -60,7 +62,8 @@ class DayN {
         }
 
         fun solve(input: InputType): OutputType {
-            return timeSolution { solveInternal(input) }
+            LOG.fine(input)
+            return LOG.timeSolution { solveInternal(input) }
         }
 
         private fun solveInternal(input: InputType): OutputType {

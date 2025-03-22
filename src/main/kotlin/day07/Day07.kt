@@ -3,6 +3,7 @@ package day07
 import util.getFileAsString
 import util.inputPath
 import util.timeSolution
+import java.util.logging.Logger
 
 typealias InputType = Map<String, Expr>
 typealias OutputType = String
@@ -102,6 +103,9 @@ private fun toString(input: InputType): String {
 }
 
 class Day07 {
+    companion object {
+        val LOG: Logger = Logger.getLogger(Day07::class.java.name)
+    }
 
     object Part1 {
         @JvmStatic
@@ -119,7 +123,7 @@ class Day07 {
 
         fun solve(input: InputType): OutputType {
             println(input)
-            return timeSolution { solveInternal(input) }
+            return LOG.timeSolution { solveInternal(input) }
         }
 
         private fun solveInternal(input: InputType): OutputType {
@@ -144,7 +148,7 @@ class Day07 {
         }
 
         fun solve(input: InputType): OutputType {
-            return timeSolution { solveInternal(input) }
+            return LOG.timeSolution { solveInternal(input) }
         }
 
         private fun solveInternal(input: InputType): OutputType {

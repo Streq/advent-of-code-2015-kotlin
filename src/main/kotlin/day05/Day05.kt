@@ -3,6 +3,7 @@ package day05
 import util.getFileAsString
 import util.inputPath
 import util.timeSolution
+import java.util.logging.Logger
 
 typealias InputType = String
 
@@ -28,6 +29,9 @@ fun isNice2(s: String): Boolean {
 }
 
 class Day05 {
+    companion object {
+        val LOG: Logger = Logger.getLogger(Day05::class.java.name)
+    }
 
     object Part1 {
         @JvmStatic
@@ -41,7 +45,7 @@ class Day05 {
 
         fun solve(input: InputType): Long {
             println(input)
-            return timeSolution { solveInternal(input) }
+            return LOG.timeSolution { solveInternal(input) }
         }
 
         private fun solveInternal(input: InputType): Long {
@@ -60,7 +64,7 @@ class Day05 {
         }
 
         fun solve(input: InputType): Long {
-            return timeSolution { solveInternal(input) }
+            return LOG.timeSolution { solveInternal(input) }
         }
 
         private fun solveInternal(input: InputType): Long {

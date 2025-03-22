@@ -4,6 +4,7 @@ import util.getFileAsString
 import util.inputPath
 import util.timeSolution
 import java.security.MessageDigest
+import java.util.logging.Logger
 
 typealias InputType = String
 
@@ -28,6 +29,9 @@ fun hash(s: String): String {
 
 
 class Day04 {
+    companion object {
+        val LOG: Logger = Logger.getLogger(Day04::class.java.name)
+    }
 
     object Part1 {
         @JvmStatic
@@ -41,7 +45,7 @@ class Day04 {
 
         fun solve(input: InputType): Long {
             println(input)
-            return timeSolution { solveInternal(input) }
+            return LOG.timeSolution { solveInternal(input) }
         }
 
         private fun solveInternal(input: InputType): Long {
@@ -66,7 +70,7 @@ class Day04 {
         }
 
         fun solve(input: InputType): Long {
-            return timeSolution { solveInternal(input) }
+            return LOG.timeSolution { solveInternal(input) }
         }
 
 

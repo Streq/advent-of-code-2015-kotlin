@@ -3,6 +3,7 @@ package day03
 import util.getFileAsString
 import util.inputPath
 import util.timeSolution
+import java.util.logging.Logger
 
 object Input {
     val PATH: String = inputPath(object {}.javaClass)
@@ -18,6 +19,9 @@ fun MutPoint.toPoint(): Point = Point(x, y)
 
 
 class Day03 {
+    companion object {
+        val LOG: Logger = Logger.getLogger(Day03::class.java.name)
+    }
 
     object Part1 {
         @JvmStatic
@@ -31,7 +35,7 @@ class Day03 {
 
         fun solve(input: String): Long {
             println(input)
-            return timeSolution { solveInternal(input) }
+            return LOG.timeSolution { solveInternal(input) }
         }
 
         private fun solveInternal(input: String): Long {
@@ -64,7 +68,7 @@ class Day03 {
         }
 
         fun solve(input: String): Long {
-            return timeSolution { solveInternal(input) }
+            return LOG.timeSolution { solveInternal(input) }
         }
 
         private fun solveInternal(input: String): Long {

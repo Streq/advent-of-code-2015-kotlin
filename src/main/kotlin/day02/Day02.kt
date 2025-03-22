@@ -1,8 +1,10 @@
 package day02
 
+import day01.Day01
 import util.getFileAsString
 import util.inputPath
 import util.timeSolution
+import java.util.logging.Logger
 
 object Input {
     val PATH: String = inputPath(object {}.javaClass)
@@ -43,7 +45,9 @@ private fun inputFromFile(path: String): List<Box> {
 }
 
 class Day02 {
-
+    companion object {
+        val LOG: Logger = Logger.getLogger(Day01::class.java.name)
+    }
     object Part1 {
         @JvmStatic
         fun main(args: Array<String>) {
@@ -56,7 +60,7 @@ class Day02 {
 
         fun solve(input: List<Box>): Long {
             println(input)
-            return timeSolution { solveInternal(input) }
+            return LOG.timeSolution { solveInternal(input) }
         }
 
         private fun solveInternal(input: List<Box>): Long {
@@ -75,7 +79,7 @@ class Day02 {
         }
 
         fun solve(input: List<Box>): Long {
-            return timeSolution { solveInternal(input) }
+            return LOG.timeSolution { solveInternal(input) }
         }
 
         private fun solveInternal(input: List<Box>): Long {

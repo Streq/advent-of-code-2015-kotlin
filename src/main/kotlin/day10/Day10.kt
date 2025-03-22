@@ -3,6 +3,7 @@ package day10
 import util.getFileAsString
 import util.inputPath
 import util.timeSolution
+import java.util.logging.Logger
 
 typealias InputType = String
 typealias OutputType = Long
@@ -29,7 +30,9 @@ fun Num.expand(): Long {
 }
 
 class Day10 {
-
+    companion object {
+        val LOG = Logger.getLogger(Day10::class.java.name)
+    }
     object Part1 {
         @JvmStatic
         fun main(args: Array<String>) {
@@ -46,7 +49,7 @@ class Day10 {
 
         fun solve(input: InputType): OutputType {
             println(input)
-            return timeSolution { solveInternal(input) }
+            return LOG.timeSolution { solveInternal(input) }
         }
 
 
@@ -72,7 +75,7 @@ class Day10 {
         }
 
         fun solve(input: InputType): OutputType {
-            return timeSolution { solveInternal(input) }
+            return LOG.timeSolution { solveInternal(input) }
         }
 
         private fun solveInternal(input: InputType): OutputType {

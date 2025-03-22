@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package util
 
 import java.net.URL
@@ -5,16 +7,49 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.time.Duration
 import java.time.Instant
+import java.util.logging.Level
+import java.util.logging.Logger
 
+fun Logger.log(level: Level, any: Any) {
+    log(level, any.toString())
+}
 
-fun <T> timeSolution(solver: () -> T): T {
+fun Logger.severe(any: Any) {
+    log(Level.SEVERE, any)
+}
+
+fun Logger.warning(any: Any) {
+    log(Level.WARNING, any)
+}
+
+fun Logger.info(any: Any) {
+    log(Level.INFO, any)
+}
+
+fun Logger.config(any: Any) {
+    log(Level.CONFIG, any)
+}
+
+fun Logger.fine(any: Any) {
+    log(Level.FINE, any)
+}
+
+fun Logger.finer(any: Any) {
+    log(Level.FINER, any)
+}
+
+fun Logger.finest(any: Any) {
+    log(Level.FINEST, any)
+}
+
+fun <T> Logger.timeSolution(solver: () -> T): T {
     val start = Instant.now()
-    println("starting at $start")
+    info("starting at $start")
     val ret = solver()
     val end = Instant.now()
-    println("ended at $end")
+    info("ended at $end")
     val diff = Duration.between(start, end)
-    println("this shit took me $diff")
+    info("this shit took me $diff")
     return ret
 }
 

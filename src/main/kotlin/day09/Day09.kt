@@ -3,24 +3,29 @@ package day09
 import util.getFileAsString
 import util.inputPath
 import util.timeSolution
+import java.util.logging.Logger
 
-object Day09 {
-    @JvmStatic
-    fun main(args: Array<String>) {
-        println(solveFromFile(Input.PATH))
-    }
+class Day09 {
+    companion object {
+        val LOG: Logger = Logger.getLogger(Day09::class.java.name)
 
-    fun solveFromFile(input: String): OutputType {
-        return solve(inputFromFile(input))
-    }
+        @JvmStatic
+        fun main(args: Array<String>) {
+            println(solveFromFile(Input.PATH))
+        }
 
-    fun solveFromRawFile(fileContents: String): OutputType {
-        return solve(inputFromRawFile(fileContents))
-    }
+        fun solveFromFile(input: String): OutputType {
+            return solve(inputFromFile(input))
+        }
 
-    fun solve(input: InputType): OutputType {
-        println(input)
-        return timeSolution { solveInternal(input) }
+        fun solveFromRawFile(fileContents: String): OutputType {
+            return solve(inputFromRawFile(fileContents))
+        }
+
+        fun solve(input: InputType): OutputType {
+            println(input)
+            return LOG.timeSolution { solveInternal(input) }
+        }
     }
 }
 

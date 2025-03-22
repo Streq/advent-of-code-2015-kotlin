@@ -3,6 +3,7 @@ package day06
 import util.getFileAsString
 import util.inputPath
 import util.timeSolution
+import java.util.logging.Logger
 import kotlin.math.max
 
 typealias InputType = String
@@ -18,6 +19,9 @@ private fun inputFromFile(path: String): String {
 private val REGEX = "(\\w+ ?\\w+) (\\d+),(\\d+) through (\\d+),(\\d+)".toRegex()
 
 class Day06 {
+    companion object {
+        val LOG: Logger = Logger.getLogger(Day06::class.java.name)
+    }
 
     class Grid(width: UInt, height: UInt) {
         val width = width.toInt()
@@ -70,7 +74,7 @@ class Day06 {
 
         fun solve(input: InputType): Long {
             println(input)
-            return timeSolution { solveInternal(input) }
+            return LOG.timeSolution { solveInternal(input) }
         }
 
         private fun solveInternal(input: InputType): Long {
@@ -106,7 +110,7 @@ class Day06 {
         }
 
         fun solve(input: InputType): Long {
-            return timeSolution { solveInternal(input) }
+            return LOG.timeSolution { solveInternal(input) }
         }
 
         private fun solveInternal(input: InputType): Long {
