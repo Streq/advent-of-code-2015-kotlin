@@ -39,7 +39,7 @@ class DayN {
         }
 
         fun solve(input: InputType): OutputType {
-            LOG.fine { input }
+            LOG.fine(input)
             return LOG.timeSolution { solveInternal(input) }
         }
 
@@ -63,7 +63,7 @@ class DayN {
         }
 
         fun solve(input: InputType): OutputType {
-            LOG.fine { input }
+            LOG.fine(input)
             return LOG.timeSolution { solveInternal(input) }
         }
 

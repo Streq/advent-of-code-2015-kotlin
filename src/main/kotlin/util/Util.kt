@@ -39,6 +39,17 @@ fun <T : Any> logger(clazz: KClass<T>, lvl: Level): Logger {
     }
 }
 
+fun <T, R : Comparable<R>> List<T>.filterMax(selector: (T) -> R): Pair<List<T>, R?> {
+    val temp = this.map { it to selector(it) }
+    val maxValue: R = temp.maxOfOrNull { it.second } ?: return Pair(listOf(), null)
+    return Pair(temp.filter { it.second == maxValue }.map { it.first }, maxValue)
+}
+
+fun <K, V, R : Comparable<R>> Map<K, V>.filterMax(selector: (Map.Entry<K, V>) -> R): Pair<Map<K, V>, R?> {
+    val temp = this.mapValues { it.value to selector(it) }
+    val maxValue: R = temp.maxOfOrNull { it.value.second } ?: return Pair(emptyMap(), null)
+    return Pair(temp.filter { it.value.second == maxValue }.mapValues { it.value.first }, maxValue)
+}
 
 fun Logger.log(level: Level, any: Any) {
     log(level) { any.toString() }
