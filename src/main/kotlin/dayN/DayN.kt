@@ -4,6 +4,8 @@ import util.*
 import java.util.logging.Level
 import java.util.logging.Logger
 
+val LOG: Logger = logger(DayN::class, Level.INFO)
+
 typealias InputType = String
 typealias OutputType = Long
 
@@ -19,7 +21,6 @@ private fun inputFromRawFile(contents: String): InputType {
     return contents
 }
 
-val LOG: Logger = logger(DayN::class, Level.INFO)
 
 class DayN {
 
@@ -38,7 +39,7 @@ class DayN {
         }
 
         fun solve(input: InputType): OutputType {
-            LOG.fine(input)
+            LOG.fine { input }
             return LOG.timeSolution { solveInternal(input) }
         }
 
@@ -62,7 +63,7 @@ class DayN {
         }
 
         fun solve(input: InputType): OutputType {
-            LOG.fine(input)
+            LOG.fine { input }
             return LOG.timeSolution { solveInternal(input) }
         }
 

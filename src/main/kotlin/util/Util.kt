@@ -7,33 +7,41 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.time.Duration
 import java.time.Instant
-import java.util.logging.ConsoleHandler
-import java.util.logging.Level
-import java.util.logging.Logger
-import java.util.logging.SimpleFormatter
+import java.util.logging.*
 import kotlin.reflect.KClass
 
-fun <T : Any>logger(clazz: KClass<T>, lvl: Level): Logger {
+
+fun <T : Any> logger(clazz: KClass<T>, lvl: Level): Logger {
     return Logger.getLogger(clazz.java.name).apply {
         level = lvl
-        // Remove default parent handlers
         useParentHandlers = false
-
-        // Remove default parent handlers
-        useParentHandlers = false
-
-        // Attach a new ConsoleHandler
-        val handler = ConsoleHandler().apply {
-            level = Level.ALL // Allow all logs to be printed
-            formatter = SimpleFormatter() // Optional: Format log output
+        val fmt = object : Formatter() {
+            override fun format(record: LogRecord?): String {
+                return "${record?.level}: ${record?.message}\n"
+            }
+        }
+        val plainFmt = object : Formatter() {
+            override fun format(record: LogRecord?): String {
+                return "${record?.message}\n"
+            }
         }
 
-        addHandler(handler) // Register the new handler
+        fun upTo(l: Level): Filter = Filter { r: LogRecord -> r.level.intValue() < l.intValue() }
+        fun handler(fmt: Formatter, from: Level, until: Level) = ConsoleHandler().apply {
+            formatter = fmt
+            level = from
+            filter = upTo(until)
+        }
+        addHandler(handler(plainFmt, Level.ALL, Level.WARNING))
+        addHandler(handler(fmt, Level.WARNING, Level.SEVERE))
+        addHandler(handler(fmt, Level.SEVERE, Level.OFF))
+
     }
 }
 
+
 fun Logger.log(level: Level, any: Any) {
-    log(level, any.toString())
+    log(level) { any.toString() }
 }
 
 fun Logger.severe(any: Any) {
@@ -64,14 +72,15 @@ fun Logger.finest(any: Any) {
     log(Level.FINEST, any)
 }
 
+
 fun <T> Logger.timeSolution(solver: () -> T): T {
     val start = Instant.now()
-    info("starting at $start")
+    info { "starting at $start" }
     val ret = solver()
     val end = Instant.now()
-    info("ended at $end")
+    info { "ended at $end" }
     val diff = Duration.between(start, end)
-    info("this shit took me $diff")
+    severe { "this shit took me $diff" }
     return ret
 }
 
