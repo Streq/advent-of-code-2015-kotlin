@@ -7,8 +7,30 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.time.Duration
 import java.time.Instant
+import java.util.logging.ConsoleHandler
 import java.util.logging.Level
 import java.util.logging.Logger
+import java.util.logging.SimpleFormatter
+import kotlin.reflect.KClass
+
+fun <T : Any>logger(clazz: KClass<T>, lvl: Level): Logger {
+    return Logger.getLogger(clazz.java.name).apply {
+        level = lvl
+        // Remove default parent handlers
+        useParentHandlers = false
+
+        // Remove default parent handlers
+        useParentHandlers = false
+
+        // Attach a new ConsoleHandler
+        val handler = ConsoleHandler().apply {
+            level = Level.ALL // Allow all logs to be printed
+            formatter = SimpleFormatter() // Optional: Format log output
+        }
+
+        addHandler(handler) // Register the new handler
+    }
+}
 
 fun Logger.log(level: Level, any: Any) {
     log(level, any.toString())

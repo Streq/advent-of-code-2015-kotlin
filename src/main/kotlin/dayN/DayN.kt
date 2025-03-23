@@ -19,7 +19,7 @@ private fun inputFromRawFile(contents: String): InputType {
     return contents
 }
 
-val LOG: Logger = Logger.getLogger(DayN::class.java.name).also { it.level = Level.INFO }
+val LOG: Logger = logger(DayN::class, Level.INFO)
 
 class DayN {
 
