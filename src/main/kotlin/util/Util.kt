@@ -125,33 +125,67 @@ private fun getPath(c: Class<*>, file: String): String {
 class Grid<T>(w: Int, h: Int, initializer: (Int, Int) -> T) {
     val width: Int = w
     val height: Int = h
-    val array: Array<Any?> = Array(this.width * this.height) { i -> initializer(i / this.width, i % this.height) }
+    val array: Array<Any?> = Array(this.width * this.height) { i -> initializer(i % this.width, i / this.width) }
+
+    override fun toString() =
+        array.asSequence().chunked(width).map { line -> line.joinToString("") { "$it" } }.joinToString("\n") { it }
+
+    fun forEach(fn: (x: Int, y: Int, t: T) -> Unit) =
+        array.forEachIndexed { i, v -> fn(i % this.width, i / this.width, cast(v)) }
 
     fun set(x: Int, y: Int, v: T) {
         array[i(x, y)] = v
     }
 
     fun setSafe(x: Int, y: Int, v: T): Boolean {
-        if (withinBounds(i(x, y))) {
+        return if (withinBounds(x, y)) {
             array[i(x, y)] = v
-            return true
-        }
-        return false
+            true
+        } else false
     }
 
-    fun get(x: Int, y: Int): T {
-        return getRaw(i(x, y))
-    }
-
-    fun getOrElse(x: Int, y: Int, supplier: () -> T): T {
-        val i = i(x, y)
-        return if (withinBounds(i)) getRaw(i) else supplier.invoke()
-    }
+    fun get(x: Int, y: Int): T = getRaw(i(x, y))
+    fun getOrElse(x: Int, y: Int, supplier: () -> T): T = if (withinBounds(x, y)) getRaw(i(x, y)) else supplier.invoke()
+    fun getOrElse(x: Int, y: Int, other: T): T = if (withinBounds(x, y)) getRaw(i(x, y)) else other
+    fun asSequence(): Sequence<T> = array.asSequence().map { cast(it) }
 
     @Suppress("UNCHECKED_CAST")
-    private fun getRaw(i: Int) = array[i] as T
+    private fun cast(it: Any?): T = it as T
 
-    private fun withinBounds(i: Int) = i >= 0 && i < array.size
+    private fun getRaw(i: Int): T = cast(array[i])
 
+    private fun withinBounds(x: Int, y: Int) = x in 0..<width && y in 0..<height
     private fun i(x: Int, y: Int) = y * width + x
+
 }
+
+
+// → ↓ ← ↑
+val DIRS_CARD = arrayOf(1 to 0, 0 to 1, -1 to 0, 0 to -1)
+
+// ↘ ↙ ↖ ↗
+val DIRS_DIAG = arrayOf(1 to 1, -1 to 1, -1 to -1, 1 to -1)
+
+// ↘ ↙ ↖ ↗
+val DIRS_DIAG_U = arrayOf(1 to 1, 0 to 1, 0 to 0, 1 to 0)
+
+// → ↘ ↓ ↙ ← ↖ ↑ ↗
+val DIRS_ALL = DIRS_CARD.zip(DIRS_DIAG).flatMap { it.toList() }.toTypedArray()
+
+// ↖ ↑ ↗
+// ←   →
+// ↙ ↓ ↘
+val DIRS_ALL_LAYOUT_ORDER = arrayOf(
+    -1 to -1, 0 to -1, 1 to -1,
+    -1 to 0, /*     */ 1 to 0,
+    -1 to 1, 0 to 1, 1 to 1
+)
+
+// ↖ ↑ ↗
+// ← 0 →
+// ↙ ↓ ↘
+val DIRS_ALL_LAYOUT_ORDER_INCLUDING_0 = arrayOf(
+    -1 to -1, 0 to -1, 1 to -1,
+    -1 to 0, 0 to 0, 1 to 0,
+    -1 to 1, 0 to 1, 1 to 1
+)
