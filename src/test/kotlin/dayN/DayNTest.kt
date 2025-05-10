@@ -11,7 +11,7 @@ class DayNTest {
 
     @Test
     fun testPart2() {
-        assertEquals(0, DayN.Part2.solveFromFile(""""""))
+        assertEquals(0, DayN.Part2.solveFromRawFile(""""""))
     }
 }
 
